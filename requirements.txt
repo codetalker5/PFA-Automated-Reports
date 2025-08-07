@@ -1,0 +1,11 @@
+reportlab         
+altair-saver     
+pdfkit 
+google-genai 
+streamlit
+clickhouse_connect
+dotenv
+pandas
+altair
+vl-convert-python 
+altair_viewer
