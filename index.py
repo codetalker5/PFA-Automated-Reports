@@ -1,5 +1,5 @@
-import clickhouse_connect # pyright: ignore[reportMissingImports]
-from dotenv import dotenv_values # type: ignore
+import clickhouse_connect 
+from dotenv import dotenv_values
 import streamlit as st
 import pandas as pd
 from queries import *
