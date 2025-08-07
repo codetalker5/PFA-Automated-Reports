@@ -173,8 +173,6 @@ def generate_pdf(df, chart, summary_points, filename="report.pdf"):
     story.append(Image(chart_path, width=6*inch, height=3.5*inch))
     story.append(Spacer(1, 12))
 
-    # Data Table
-    story.append(Paragraph("📈 Data Table", styles["Heading2"]))
 
         # Summary Points
     story.append(Paragraph("📌 Summary Points", styles["Heading2"]))
@@ -183,6 +181,8 @@ def generate_pdf(df, chart, summary_points, filename="report.pdf"):
     story.append(Spacer(1, 12))
 
 
+    # Data Table
+    story.append(Paragraph("📈 Data Table", styles["Heading2"]))
     # Convert df to a list of lists
     table_data = [df.columns.to_list()] + df.values.tolist()
 
