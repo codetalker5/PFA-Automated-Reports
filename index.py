@@ -1,5 +1,4 @@
 import clickhouse_connect 
-from dotenv import dotenv_values
 import streamlit as st
 import pandas as pd
 from queries import *
@@ -8,16 +7,15 @@ import os
 from google import genai
 
 
-ENV = dotenv_values('C:\\Users\\catal\\OneDrive\\Desktop\\PFA\\PFA_Streamlit_reports\\.env')
 
 @st.cache_resource
 def get_client():
     client = clickhouse_connect.get_client(
-        host= ENV['CLICKHOUSE_HOST'],
-        port= ENV['CLICKHOUSE_PORT'],  # Or 443 for HTTPS if applicable
-        username= ENV['CLICKHOUSE_USER'],
-        password= ENV['CLICKHOUSE_PASSWORD'],
-        database = ENV['CLICKHOUSE_SCHEMA']
+        host= st.secrets['CLICKHOUSE_HOST'],
+        port= st.secrets['CLICKHOUSE_PORT'],  # Or 443 for HTTPS if applicable
+        username= st.secrets['CLICKHOUSE_USER'],
+        password= st.secrets['CLICKHOUSE_PASSWORD'],
+        database = st.secrets['CLICKHOUSE_SCHEMA']
     )
     return client
 
@@ -78,7 +76,6 @@ st.altair_chart(chart, use_container_width=False)
 def c1(client, df ):
     dict = df.to_dict(orient="split")
 
-
     instruction = """
         The below data represents the percentage of students that 
         have met the Indicator's requirements. I want you to summarize 
@@ -95,7 +92,6 @@ def c1(client, df ):
     points = text.splitlines()
     return points
 
-os.environ['GEMINI_API_KEY'] = ENV['GEMINI_API_KEY']
 
 client = genai.Client()
 
