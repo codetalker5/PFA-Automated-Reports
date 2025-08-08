@@ -29,10 +29,12 @@ def t1(client = client):
     df2 = client.query_df(q1b)
     # df2 = df2.applymap(lambda x: f"{x}%" if pd.notnull(x) else x)
     df2["Indicator"] = 'Students with one or more bucket jump'
-    df3 = client.query_df (q1c)
+    df3 = client.query_df(q1c)
     df3["Indicator"] = 'Increase in Students that attained Class appropriate levels'
+    df4 = client.query_df(q1d)
+    df4["Indicator"] = 'No. of Students'
 
-    df = pd.concat([df1, df2,df3], ignore_index=True)
+    df = pd.concat([df4, df1, df2,df3], ignore_index=True)
     pivot_df = df.pivot(index="Indicator", columns="bl_subject", values="pct")
     pivot_df['Average'] = pivot_df.mean(axis=1).round(0).astype(int)
     pivot_df = pivot_df.astype(int)
@@ -42,9 +44,17 @@ def t1(client = client):
 
 st.set_page_config(layout="wide")
 
+st.markdown("## 1. About Utkarsh - Remediation Programme for Class 9 students based on Transform Schools' Learning model")
+st.markdown("""
+    Utkarsh is a 225 hours of programme, spanning 69 days to improve learning outcomes of students in Class 9. Programme aids in
+    bridging the learning gaps in Odia, English, Maths and Science. The programme was implemented in 27 districts. The students were
+    assessed on elementary level competencies (classes 3-8) at the start of the programme and then supported through collaborative,
+    interactive and experiential competency based teaching practices and resources. At the end of the programme, they were tested to
+    evaluate the changes in their scores and levels. This report analyses the performance for students, districts and subjects.
+    """)
 
 df = t1()
-st.title("ClickHouse Data in Streamlit")
+st.title("Student Performance Report")
 df = df.set_index('Indicator')
 print(df)
 st.dataframe(df)
@@ -57,14 +67,15 @@ df = df.reset_index().rename(columns={'index': 'Indicator'})
 df_long = df.melt(id_vars='Indicator', var_name='Subject', value_name='Value')
 # Create Altair chart
 chart = alt.Chart(df_long).mark_bar().encode(
-    x=alt.X('Subject:N', title='Subject'),
-    y=alt.Y('Value:Q', title='Value', stack='zero'),
+    x=alt.X('Subject:N', title='Subject'),  # Outer grouping
+    xOffset='Indicator:N',                  # Inner grouping by indicator
+    y=alt.Y('Value:Q', title='Value'),
     color=alt.Color('Indicator:N', title='Indicator'),
     tooltip=['Indicator', 'Subject', 'Value']
 ).properties(
     width=600,
     height=400,
-    title='Performance by Subject (Stacked by Indicator)'
+    title='Performance by Subject (Grouped by Indicator)'
 ).configure_legend(
     orient='bottom',
     direction='horizontal',
@@ -72,6 +83,7 @@ chart = alt.Chart(df_long).mark_bar().encode(
 )
 
 st.altair_chart(chart, use_container_width=False)
+
 
 def c1(client, df ):
     dict = df.to_dict(orient="split")
