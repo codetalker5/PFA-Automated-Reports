@@ -77,6 +77,8 @@ def t1(client=clickhouse_client):
 # STREAMLIT PAGE SETUP
 # -------------------------
 st.set_page_config(layout="wide")
+st.title("Student Performance Report")
+
 
 st.markdown("## 1. About Utkarsh - Remediation Programme for Class 9 students based on Transform Schools' Learning model")
 st.markdown("""
@@ -95,7 +97,6 @@ st.dataframe(display_df)  # table with % formatting
 # -------------------------
 # CHART DATA PREP
 # -------------------------
-st.title("Student Performance Report")
 
 # Chart uses numeric df without "No. of Students"
 chart_df = numeric_df[numeric_df['Indicator'] != "No. of Students"]
