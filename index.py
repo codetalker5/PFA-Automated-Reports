@@ -218,7 +218,12 @@ def generate_pdf(df, chart, summary_points, filename="report.pdf"):
 # -------------------------
 # DOWNLOAD BUTTON
 # -------------------------
-if st.button("📄 Generate PDF Report"):
-    pdf_path = generate_pdf(display_df, chart, summary_points)
-    with open(pdf_path, "rb") as f:
-        st.download_button("⬇️ Download Full Report", f, file_name="streamlit_report.pdf", mime="application/pdf")
+try:
+    if st.button("📄 Generate PDF Report"):
+        pdf_path = generate_pdf(display_df, chart, summary_points)
+        with open(pdf_path, "rb") as f:
+            st.download_button("⬇️ Download Full Report", f, file_name="streamlit_report.pdf", mime="application/pdf")
+
+except Exception as e:
+    print(e)
+    st.markdown("## We have encountered some error.\n Please contact support team.")
