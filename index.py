@@ -159,14 +159,16 @@ def c1(gen_client, df):
     )
     return [p for p in response.text.splitlines() if p.strip()]
 
+try: 
+    gen_client = genai.Client()
+    summary_points = c1(gen_client, chart_df)
 
-gen_client = genai.Client()
-summary_points = c1(gen_client, chart_df)
+    st.markdown("### 📌 Summary Points")
+    for point in summary_points:
+        st.markdown(f"- {point}")
 
-st.markdown("### 📌 Summary Points")
-for point in summary_points:
-    st.markdown(f"- {point}")
-
+except Exception as e:
+    st.markdown("## We have encountered some error.\n Please contact support team.")
 
 # -------------------------
 # PDF GENERATION
