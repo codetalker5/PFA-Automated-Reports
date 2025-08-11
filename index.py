@@ -145,7 +145,7 @@ st.altair_chart(chart, use_container_width=False)
 # GEMINI SUMMARY
 # -------------------------
 def c1(gen_client, df):
-    data_dict = df.to_dict(orient="split")
+    data_dict = df.to_string()
     instruction = """
         The below data represents the percentage of students that 
         have met the Indicator's requirements. I want you to summarize 
@@ -162,15 +162,14 @@ def c1(gen_client, df):
 
 try: 
     gen_client = genai.Client()
-    gen_df = chart_df.to_string()
-    summary_points = c1(gen_client, gen_df)
+    summary_points = c1(gen_client, chart_df)
 
     st.markdown("### 📌 Summary Points")
     for point in summary_points:
         st.markdown(f"- {point}")
 
 except Exception as e:
-    st.markdown("## We have encountered some error.\n Please contact support team.")
+    st.markdown("## We have encountered some error in summary generation.\n Please contact support team.")
 
 # -------------------------
 # PDF GENERATION
