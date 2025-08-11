@@ -162,7 +162,7 @@ def c1(gen_client, df):
 
 try: 
     gen_client = genai.Client()
-    gen_df = chart_df.replace(r"%", "", regex=True)
+    gen_df = chart_df.replace(r"%", "", regex=True).apply(pd.to_numeric, errors="ignore")
     summary_points = c1(gen_client, gen_df)
 
     st.markdown("### 📌 Summary Points")
