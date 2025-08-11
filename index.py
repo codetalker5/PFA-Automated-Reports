@@ -163,7 +163,7 @@ def c1(gen_client, df):
 try: 
     gen_client = genai.Client()
     gen_df = chart_df.astype(str)
-    summary_points = c1(gen_client, chart_df)
+    summary_points = c1(gen_client, gen_df)
 
     st.markdown("### 📌 Summary Points")
     for point in summary_points:
