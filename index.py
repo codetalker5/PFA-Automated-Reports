@@ -170,7 +170,6 @@ try:
         st.markdown(f"- {point}")
 
 except Exception as e:
-    gen_df
     st.markdown("## We have encountered some error in summary generation.\n Please contact support team.")
 
 # -------------------------
